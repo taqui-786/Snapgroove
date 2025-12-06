@@ -125,7 +125,7 @@ export const DownloadDialog = ({
 
               <div className="w-full space-x-3 flex justify-center gap-4 pt-2">
          
-            <Link href={'/'} target="_blank" className="flex items-center gap-2 text-muted-foreground hover:text-primary">
+            <Link href={'https://github.com/taqui-786/Snapgroove'} target="_blank" className="flex items-center gap-2 text-muted-foreground hover:text-primary">
               <GithubIcon size="20" />
               Star on GitHub
             </Link>

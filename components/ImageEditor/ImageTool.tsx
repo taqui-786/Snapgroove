@@ -46,7 +46,7 @@ export function ImageTool({
   const [options, setOptions] = useState<Options>(
     initialEditorState?.options || {
       aspectRatio: "aspect-auto",
-      theme: "bg-gradient-to-br from-cyan-300 to-sky-400",
+      theme: "bg-gradient-to-br from-primary to-chart-1",
       customTheme: {
         colorStart: "#f3f4f6",
         colorEnd: "#e5e7eb",
@@ -229,7 +229,7 @@ export function ImageTool({
       }
 
       const link = document.createElement("a");
-      link.download = "image-export.png";
+      link.download = "snapgroove-export.png";
       link.href = data;
       link.click();
 
@@ -244,11 +244,10 @@ export function ImageTool({
       setDownloadStatus("success");
 
       if (onUpload) {
-        const file = dataURLtoFile(data, "edited-image.png");
+        const file = dataURLtoFile(data, "snapgroove-export.png");
         onUpload(file);
       }
 
-      // toast.success("Image exported! 🎉", { id: savingToast }); // Removed toast
     } catch (error) {
       setDownloadDialogOpen(false);
       setDownloadStatus("idle");
@@ -296,7 +295,7 @@ export function ImageTool({
 
   const handleClickExampleImage = () => {
     setBlob({
-      src: "/images/image-example-image-editor.png",
+      src: "/sample-image.png",
     });
   };
 
