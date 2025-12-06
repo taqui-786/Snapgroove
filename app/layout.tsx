@@ -31,6 +31,13 @@ export const metadata: Metadata = {
     "open graph generator",
     "image beautifier",
   ],
+    authors: [
+    {
+      name: "Md Taqui Imam",
+      url: "https://github.com/taqui-786",
+    },
+  ],
+  creator: "Md Taqui Imam",
   openGraph: {
     title: "Snapgroove - Beautiful Image Editor & Screenshot Tool",
     description:
