@@ -13,10 +13,10 @@ export default function ExpandableScreenDailog() {
       triggerRadius="100px"
       contentRadius="24px"
     >
-      <div className="flex min-h-screen items-center justify-center">
+      <div className="flex  items-center justify-center">
         <ExpandableScreenTrigger>
           <button className="bg-primary px-6 py-3 text-primary-foreground">
-            Open Screen
+            Let's make it
           </button>
         </ExpandableScreenTrigger>
       </div>
