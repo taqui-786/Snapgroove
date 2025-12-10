@@ -31,7 +31,7 @@ export const ImageSettings = ({
   return (
     <div
       className={cn(
-        "bg-light-gray w-[19rem] rounded-lg min-h-full max-h-[80vh] flex flex-col",
+        "bg-light-gray xl:w-[19rem] w-full rounded-lg min-h-full max-h-[80vh] flex flex-col xl:order-1 order-2",
         {
           hidden: !Boolean(blob.src),
         }

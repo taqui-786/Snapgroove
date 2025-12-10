@@ -94,7 +94,7 @@ export const Canvas = ({
   return (
     <div
       className={cn(
-        "relative w-full flex-1 flex items-start justify-center min-h-[500px] h-full rounded-lg",
+        "relative w-full flex-1 flex items-start justify-center min-h-[500px] h-full rounded-lg xl:order-2 order-1",
         "bg-light-gray border border-stone-200 bg-[size:10px_10px] bg-fixed transition-all duration-200",
         {
           "items-center h-[80vh]": !Boolean(blob.src),
@@ -287,44 +287,10 @@ export const Canvas = ({
                           });
                         }
                       }}
-                      // The onLoad logic is complex and depends on state.
-                      // It might be better to move this handler to the parent or pass all necessary state.
-                      // I'll pass the `onImageLoad` callback from parent to keep this component cleaner?
-                      // No, the parent is already huge.
-                      // I'll implement the logic here but I need `userResized` prop.
-                      // I'll add `userResized` to props in the next step.
-                      // Actually, I can just define the prop in the interface now.
-                      // Wait, I can't edit the interface I just wrote in the previous step (it was in my head).
-                      // I am writing the file now.
+               
                       alt="Screenshot preview"
                     />
-                    {/* I need to handle the onLoad properly.
-                        The original code:
-                        if (!userResized && naturalWidth && naturalHeight) {
-                              const aspectRatio = naturalHeight / naturalWidth
-                              const maxHeight = window.innerHeight * 0.7
-                              const maxWidth = canvasWidth
-
-                              let newHeight = canvasWidth * aspectRatio
-
-                              if (newHeight > maxHeight) {
-                                newHeight = maxHeight
-                                const newWidth = newHeight / aspectRatio
-                                setCanvasWidth(Math.min(newWidth, maxWidth))
-                              }
-
-                              setCanvasHeight(
-                                Math.max(200, Math.min(newHeight, maxHeight)),
-                              )
-                              setUserResized(true)
-                            }
-
-                            if (blob.src) {
-                              getMostCommonBorderColor(blob.src, (color) => {
-                                setOutlineColor(rgbToHex(color))
-                              })
-                            }
-                    */}
+             
                   </div>
                 </Frame>
               </div>
@@ -367,7 +333,7 @@ export const Canvas = ({
       ) : (
         <div
           className={cn(
-            "flex flex-col items-center justify-center p-12 border bg-white border-stone-200 rounded-xl cursor-pointer hover:border-stone-300 transition-all duration-300 backdrop-blur-sm"
+            "flex flex-col items-center justify-center xl:p-12 p-2 border bg-white border-stone-200 rounded-xl cursor-pointer hover:border-stone-300 transition-all duration-300 backdrop-blur-sm"
           )}
           onClick={(e) => e.stopPropagation()}
         >

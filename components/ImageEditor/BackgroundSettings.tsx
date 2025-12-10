@@ -27,12 +27,13 @@ export const BackgroundSettings = ({
   return (
     <div
       className={cn(
-        "bg-light-gray w-[19rem] rounded-lg min-h-full max-h-[80vh] flex flex-col",
+        "bg-light-gray xl:w-[19rem] w-full rounded-lg min-h-full max-h-[80vh] flex flex-col order-3",
         {
           hidden: !Boolean(blob.src),
         }
       )}
     >
+      
       <div className="flex-1 overflow-y-auto p-6">
         <div className="space-y-8">
           <div className="space-y-6">
@@ -44,6 +45,7 @@ export const BackgroundSettings = ({
                     Background Settings
                   </span>
                 </div>
+               
               </div>
 
               <Toggle

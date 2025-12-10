@@ -23,7 +23,7 @@ export default function ExpandableScreenDailog() {
 
       <ExpandableScreenContent className="relative  backdrop-blur-lg border border-white/20  bg-primary-50/50 ring-2 ring-black-500 ring-offset-2 "
 >
-        <div className="flex h-full w-full items-center justify-center p-8 ">
+        <div className="flex xl:h-full h-auto w-full items-center justify-center xl:p-8 p-2 xl:pt-2 pt-14 ">
           <ImageTool />
         </div>
       </ExpandableScreenContent>
