@@ -38,7 +38,7 @@ export const Navbar = () => {
         <Link
           href="https://github.com/taqui-786/Snapgroove"
           target="_blank"
-          className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-black rounded-full hover:bg-gray-800 transition-colors"
+          className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-primary rounded-full hover:bg-gray-800 transition-colors"
         >
           <Github className="w-4 h-4" />
           <span>Github</span>
