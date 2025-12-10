@@ -1,22 +1,22 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import * as SliderPrimitive from "@radix-ui/react-slider"
-import { Minus, Plus, RotateCcw } from "lucide-react"
-import { cn } from "@/lib/utils"
+import * as React from "react";
+import * as SliderPrimitive from "@radix-ui/react-slider";
+import { Minus, Plus, RotateCcw } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 interface EnhancedSliderProps {
-  value: number
-  onChange: (value: number) => void
-  min?: number
-  max?: number
-  step?: number
-  defaultValue?: number
-  disabled?: boolean
-  className?: string
-  label?: string
-  icon?: React.ReactNode
-  unit?: string
+  value: number;
+  onChange: (value: number) => void;
+  min?: number;
+  max?: number;
+  step?: number;
+  defaultValue?: number;
+  disabled?: boolean;
+  className?: string;
+  label?: string;
+  icon?: React.ReactNode;
+  unit?: string;
 }
 
 export function EnhancedSlider({
@@ -32,24 +32,25 @@ export function EnhancedSlider({
   icon,
   unit,
   ...props
-}: EnhancedSliderProps & Omit<React.HTMLAttributes<HTMLDivElement>, 'onChange'>) {
+}: EnhancedSliderProps &
+  Omit<React.HTMLAttributes<HTMLDivElement>, "onChange">) {
   const handleChange = (values: number[]) => {
-    onChange(values[0]!)
-  }
+    onChange(values[0]!);
+  };
 
   const decrementValue = () => {
-    const newValue = Math.max(value - step, min)
-    onChange(newValue)
-  }
+    const newValue = Math.max(value - step, min);
+    onChange(newValue);
+  };
 
   const incrementValue = () => {
-    const newValue = Math.min(value + step, max)
-    onChange(newValue)
-  }
+    const newValue = Math.min(value + step, max);
+    onChange(newValue);
+  };
 
   const resetValue = () => {
-    onChange(defaultValue)
-  }
+    onChange(defaultValue);
+  };
 
   return (
     <div className={cn("space-y-2 w-full", className)}>
@@ -58,10 +59,15 @@ export function EnhancedSlider({
           <div className="flex items-center gap-2">
             <div className="flex items-center gap-2">
               {icon && <span className="text-muted-foreground">{icon}</span>}
-              {label && <span className="block font-medium text-xs text-stone-700">{label}</span>}
+              {label && (
+                <span className="block font-medium text-xs text-stone-700">
+                  {label}
+                </span>
+              )}
             </div>
             <div className="text-xs px-0.5 rounded text-stone-400 font-medium">
-              {value}{unit}
+              {Number(value.toFixed(2))}
+              {unit}
             </div>
           </div>
           <button
@@ -79,11 +85,8 @@ export function EnhancedSlider({
           </button>
         </div>
       )}
-      
-      <div
-        className="flex w-full items-center gap-2"
-        {...props}
-      >
+
+      <div className="flex w-full items-center gap-2" {...props}>
         <button
           onClick={decrementValue}
           disabled={disabled || value <= min}
@@ -139,5 +142,5 @@ export function EnhancedSlider({
         </button>
       </div>
     </div>
-  )
-} 
+  );
+}

@@ -7,7 +7,7 @@ import {
 import { Toggle } from "@/components/ui/toggle";
 import { cn } from "@/lib/utils";
 
-import { EnhancedSlider } from "../EnchancedSidebar";
+import { EnhancedSlider } from "../ui/EnchancedSidebar";
 import type { Options, ScreenshotBlob } from "./types";
 import { BackgroundIcon, ImageDownloadIcon } from "../CustomIcons";
 
@@ -33,7 +33,6 @@ export const BackgroundSettings = ({
         }
       )}
     >
-      
       <div className="flex-1 overflow-y-auto p-6">
         <div className="space-y-8">
           <div className="space-y-6">
@@ -45,7 +44,6 @@ export const BackgroundSettings = ({
                     Background Settings
                   </span>
                 </div>
-               
               </div>
 
               <Toggle

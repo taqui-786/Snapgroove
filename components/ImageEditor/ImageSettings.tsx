@@ -5,7 +5,7 @@ import {
 } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
 import { Grip } from "lucide-react";
-import { EnhancedSlider } from "../EnchancedSidebar";
+import { EnhancedSlider } from "../ui/EnchancedSidebar";
 import type { Options, ScreenshotBlob } from "./types";
 import { ImageIcon } from "../CustomIcons";
 
@@ -115,6 +115,36 @@ export const ImageSettings = ({
                           </div>
                         </div>
                       )}
+                      {options.frame === "mac-light" && (
+                        <div className="w-10 h-8 bg-white border border-gray-300 rounded-sm overflow-hidden flex flex-col">
+                          <div className="h-2 bg-gray-100 border-b border-gray-200 flex items-center px-1 gap-0.5">
+                            <div className="w-1 h-1 rounded-full bg-red-400" />
+                            <div className="w-1 h-1 rounded-full bg-yellow-400" />
+                            <div className="w-1 h-1 rounded-full bg-green-400" />
+                          </div>
+                          <div className="flex-1 bg-white" />
+                        </div>
+                      )}
+                      {options.frame === "mac-dark" && (
+                        <div className="w-10 h-8 bg-[#1e1e1e] border border-gray-600 rounded-sm overflow-hidden flex flex-col">
+                          <div className="h-2 bg-[#2d2d2d] border-b border-gray-700 flex items-center px-1 gap-0.5">
+                            <div className="w-1 h-1 rounded-full bg-red-400" />
+                            <div className="w-1 h-1 rounded-full bg-yellow-400" />
+                            <div className="w-1 h-1 rounded-full bg-green-400" />
+                          </div>
+                          <div className="flex-1 bg-[#1e1e1e]" />
+                        </div>
+                      )}
+                      {options.frame === "chrome" && (
+                        <div className="w-10 h-8 bg-white border border-gray-300 rounded-sm overflow-hidden flex flex-col">
+                          <div className="h-2 bg-gray-100 border-b border-gray-200 flex items-end px-1 gap-0.5 pb-0">
+                            <div className="w-1 h-1 rounded-full bg-gray-300 mb-0.5" />
+                            <div className="w-1 h-1 rounded-full bg-gray-300 mb-0.5" />
+                            <div className="bg-white rounded-t-[2px] h-1.5 w-4 shadow-sm relative top-px" />
+                          </div>
+                          <div className="flex-1 bg-white relative z-10 border-t border-gray-50" />
+                        </div>
+                      )}
                     </div>
                   </button>
                 </PopoverTrigger>
@@ -142,6 +172,9 @@ export const ImageSettings = ({
                       { type: "none" as const, label: "None" },
                       { type: "arc" as const, label: "Arc" },
                       { type: "stack" as const, label: "Stack" },
+                      { type: "mac-light" as const, label: "Mac Light" },
+                      { type: "mac-dark" as const, label: "Mac Dark" },
+                      { type: "chrome" as const, label: "Chrome" },
                     ].map((frame) => (
                       <div
                         key={frame.type}
@@ -216,6 +249,36 @@ export const ImageSettings = ({
                               <div className="relative z-10">
                                 <div className="w-10 h-8 bg-white border border-gray-300 rounded-sm" />
                               </div>
+                            </div>
+                          )}
+                          {frame.type === "mac-light" && (
+                            <div className="w-10 h-8 bg-white border border-gray-300 rounded-sm overflow-hidden flex flex-col">
+                              <div className="h-2 bg-gray-100 border-b border-gray-200 flex items-center px-1 gap-0.5">
+                                <div className="w-1 h-1 rounded-full bg-red-400" />
+                                <div className="w-1 h-1 rounded-full bg-yellow-400" />
+                                <div className="w-1 h-1 rounded-full bg-green-400" />
+                              </div>
+                              <div className="flex-1 bg-white" />
+                            </div>
+                          )}
+                          {frame.type === "mac-dark" && (
+                            <div className="w-10 h-8 bg-[#1e1e1e] border border-gray-600 rounded-sm overflow-hidden flex flex-col">
+                              <div className="h-2 bg-[#2d2d2d] border-b border-gray-700 flex items-center px-1 gap-0.5">
+                                <div className="w-1 h-1 rounded-full bg-red-400" />
+                                <div className="w-1 h-1 rounded-full bg-yellow-400" />
+                                <div className="w-1 h-1 rounded-full bg-green-400" />
+                              </div>
+                              <div className="flex-1 bg-[#1e1e1e]" />
+                            </div>
+                          )}
+                          {frame.type === "chrome" && (
+                            <div className="w-10 h-8 bg-white border border-gray-300 rounded-sm overflow-hidden flex flex-col">
+                              <div className="h-2 bg-gray-100 border-b border-gray-200 flex items-end px-1 gap-0.5 pb-0">
+                                <div className="w-1 h-1 rounded-full bg-gray-300 mb-0.5" />
+                                <div className="w-1 h-1 rounded-full bg-gray-300 mb-0.5" />
+                                <div className="bg-white rounded-t-[2px] h-1.5 w-4 shadow-sm relative top-px" />
+                              </div>
+                              <div className="flex-1 bg-white relative z-10 border-t border-gray-50" />
                             </div>
                           )}
                         </div>

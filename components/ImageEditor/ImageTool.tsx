@@ -366,7 +366,7 @@ export function ImageTool({
           status={downloadStatus}
           blobUrl={downloadedBlobUrl}
           fileSize={downloadedFileSize}
-          fileName="image-export.png"
+          fileName="snapgroove-export.png"
         />
       </div>
     </div>

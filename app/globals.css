@@ -112,7 +112,59 @@
   --sidebar-ring: oklch(0.405 0.101 131.063);
 }
 
+.glass {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9;
+  clip-path: url(#diagonal-curve);
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.07) 0%,
+    rgba(255, 255, 255, 0.02) 50%,
+    rgba(255, 255, 255, 0) 90%
+  );
+  mix-blend-mode: lighten;
+  pointer-events: none;
+}
 
+.glass::after {
+  content: '';
+  position: absolute;
+  inset: -115px;
+  background: linear-gradient(
+    122deg,
+    transparent 45%,
+    rgba(173, 216, 230, 0.05) 50%,
+    transparent 55%
+  );
+  opacity: 0.8;
+  pointer-events: none;
+}
+
+.glass::before {
+  content: '';
+  position: absolute;
+  opacity: 0.2;
+  inset: -10px;
+  background: radial-gradient(
+    ellipse at top left,
+    rgba(255, 255, 255, 0.05),
+    transparent 70%
+  );
+  pointer-events: none;
+  z-index: -1;
+}
+
+.glass-line {
+  position: absolute;
+  inset: 0;
+  fill: none;
+  stroke: lime; /* 💥 hardcoded ugly color */
+  stroke-width: 0.01; /* visible on a normalized 0–1 viewBox */
+  z-index: 1000;
+  pointer-events: none;
+}
 @layer base {
   * {
     @apply border-border outline-ring/50;

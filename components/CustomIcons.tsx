@@ -66,9 +66,9 @@ export const BackgroundIcon = ({ size }: BackgroundProps) => (
     <path
       fill="none"
       stroke="currentColor"
-      stroke-linecap="round"
-      stroke-linejoin="round"
-      stroke-width="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth="1.5"
       d="M4.253 20.302C5.655 21.5 7.77 21.5 12 21.5s6.345 0 7.747-1.198q.3-.256.555-.555C21.5 18.345 21.5 16.23 21.5 12s0-6.345-1.198-7.747q-.256-.3-.555-.555C18.345 2.5 16.23 2.5 12 2.5s-6.345 0-7.747 1.198q-.3.256-.555.555C2.5 5.655 2.5 7.77 2.5 12s0 6.345 1.198 7.747q.256.3.555.555M4 20L20 4M2.698 15.802L15.806 2.694m5.5 5.5L8.198 21.302m5.302.198l8-8m-19-3l8-8"
     />
   </svg>
@@ -111,9 +111,9 @@ export const ImageDownloadIcon = ({ size }: ImageDownload02Props) => (
     <g
       fill="none"
       stroke="currentColor"
-      stroke-linecap="round"
-      stroke-linejoin="round"
-      stroke-width="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth="1.5"
       color="currentColor"
     >
       <path d="M5 21c4.21-4.751 8.941-11.052 16-6.327" />
@@ -137,9 +137,9 @@ export const GithubIcon = ({ size }: GithubProps) => (
     <g
       fill="none"
       stroke="currentColor"
-      stroke-linecap="round"
-      stroke-linejoin="round"
-      stroke-width="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth="1.5"
       color="currentColor"
     >
       <path d="M10 20.568c-3.429 1.157-6.286 0-8-3.568" />
@@ -161,9 +161,9 @@ export const TwitterIcon = ({ size }: NewTwitterProps) => (
     <path
       fill="none"
       stroke="currentColor"
-      stroke-linecap="round"
-      stroke-linejoin="round"
-      stroke-width="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth="1.5"
       d="m3 21l7.548-7.548M21 3l-7.548 7.548m0 0L8 3H3l7.548 10.452m2.904-2.904L21 21h-5l-5.452-7.548"
       color="currentColor"
     />
@@ -184,9 +184,9 @@ export const CheckmarkBadgeIcon = ({ size }: CheckmarkBadge03Props) => (
     <g
       fill="none"
       stroke="currentColor"
-      stroke-linecap="round"
-      stroke-linejoin="round"
-      stroke-width="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth="1.5"
       color="currentColor"
     >
       <path d="M14.262 3.6C13.196 2.532 12.662 2 12 2s-1.196.533-2.262 1.6c-.64.64-1.274.936-2.186.936c-.796 0-1.93-.154-2.552.473c-.618.623-.464 1.752-.464 2.543c0 .912-.297 1.546-.937 2.186C2.533 10.804 2 11.338 2 12s.533 1.196 1.6 2.262c.716.717.936 1.18.936 2.186c0 .796-.154 1.93.473 2.552c.623.617 1.752.464 2.543.464c.971 0 1.44.19 2.133.883c.59.59 1.381 1.653 2.315 1.653s1.725-1.063 2.315-1.653c.694-.693 1.162-.883 2.133-.883c.791 0 1.92.154 2.543-.464m1.41-9.262C21.467 10.804 22 11.338 22 12s-.533 1.196-1.6 2.262c-.716.717-.936 1.18-.936 2.186c0 .796.154 1.93-.473 2.552m0 0H19" />
