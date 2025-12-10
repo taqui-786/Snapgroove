@@ -15,7 +15,7 @@ export default function ExpandableScreenDailog() {
     >
       <div className="flex  items-center justify-center">
         <ExpandableScreenTrigger>
-          <button className="bg-primary px-6 py-3 text-primary-foreground cursor-pointer">
+          <button className="bg-primary px-6 py-3 text-primary-foreground cursor-pointer hover:bg-primary/80 transition-all duration-300">
             Let's Make It Pretty
           </button>
         </ExpandableScreenTrigger>
