@@ -300,7 +300,7 @@ export function ImageTool({
   };
 
   return (
-    <div className="flex flex-col pt-1 w-full" data-vaul-no-drag>
+    <div className="flex flex-col  w-full bg-background p-4 rounded-lg  " data-vaul-no-drag>
       <div className="relative w-full flex justify-center gap-4">
         <ImageSettings
           options={options}
