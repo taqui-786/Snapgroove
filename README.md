@@ -1,36 +1,101 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Snapgroove 📸
 
-## Getting Started
+<div align="center">
 
-First, run the development server:
+![Snapgroove](public/hero-showcase-img.png)
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+<br />
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+# Beautiful Image Editor & Screenshot Tool
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Creates stunning visuals for your social media, presentations, and documentation.
+### **100% Free. Privacy Focused. Runs in Browser.**
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+[Live Demo](https://taqui-imam.vercel.app) · [Report Bug](https://github.com/taqui-786/Snapgroove/issues) · [Request Feature](https://github.com/taqui-786/Snapgroove/issues)
 
-## Learn More
+</div>
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 🚀 About Snapgroove
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+**Snapgroove** is a powerful, privacy-first image editor that runs entirely in your browser. It transforms plain screenshots and images into professional-grade graphics in seconds. Whether you're a developer sharing code snippets, a marketer creating social posts, or a writer generating OG images, Snapgroove makes your visuals pop.
 
-## Deploy on Vercel
+No sign-up required. No watermarks. No data leaves your device.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## ✨ Features
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- **🎨 Beautiful Backgrounds**: Choose from curated gradients, stylish patterns, or clean solid colors.
+- **🖼️ Aesthetic Frames**: Wrap your screenshots in modern, sleek window frames (macOS, Windows, etc.).
+- **🔒 Privacy First**: All processing happens locally. Your images never touch our servers.
+- **⚡ Blazing Fast**: Built with Next.js for instant performance.
+- **📱 Responsive**: Works seamlessly on desktop and tablet.
+- **🛠️ Customization**: Adjust padding, border radius, shadows, and more.
+- **📐 Aspect Ratios**: One-click presets for Twitter/X, Instagram, LinkedIn, and more.
+- **💾 Easy Export**: Download high-quality PNGs instantly.
+
+## 🛠️ Tech Stack
+
+Built with the latest modern web technologies:
+
+- **Framework**: [Next.js 15](https://nextjs.org/) (App Router)
+- **Language**: [TypeScript](https://www.typescriptlang.org/)
+- **Styling**: [Tailwind CSS](https://tailwindcss.com/)
+- **Icons**: [Lucide React](https://lucide.dev/)
+- **Font**: Geist Sans & Mono
+- **Deployment**: [Vercel](https://vercel.com/)
+
+## 🏃‍♂️ Getting Started
+
+Running Snapgroove locally is simple.
+
+1.  **Clone the repository**
+    ```bash
+    git clone https://github.com/taqui-786/snapgroove.git
+    cd snapgroove
+    ```
+
+2.  **Install dependencies**
+    ```bash
+    npm install
+    # or
+    yarn install
+    # or
+    pnpm install
+    ```
+
+3.  **Run the development server**
+    ```bash
+    npm run dev
+    ```
+
+4.  **Open in Browser**
+    Visit `http://localhost:3000` to see the app running.
+
+## 🤝 Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+1.  Fork the Project
+2.  Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
+3.  Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
+4.  Push to the Branch (`git push origin feature/AmazingFeature`)
+5.  Open a Pull Request
+
+## 👤 Author
+
+**Md Taqui Imam**
+
+- Website: [taqui-imam.vercel.app](https://taqui-imam.vercel.app)
+- GitHub: [@taqui-786](https://github.com/taqui-786)
+- Twitter: [@taqui_786](https://twitter.com/taqui_786)
+
+## 📄 License
+
+Distributed under the MIT License. See `LICENSE` for more information.
+
+---
+
+<div align="center">
+  Made with ❤️ by <a href="https://github.com/taqui-786">Taqui Imam</a>
+</div>
