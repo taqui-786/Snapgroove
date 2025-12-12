@@ -21,9 +21,9 @@ export default function ExpandableScreenDailog() {
         </ExpandableScreenTrigger>
       </div>
 
-      <ExpandableScreenContent className="relative  backdrop-blur-lg border border-white/20  bg-primary-50/50 ring-2 ring-black-500 ring-offset-2 "
+      <ExpandableScreenContent className="relative  backdrop-blur-lg border border-white/20  bg-primary-50/50 ring-2 ring-black-500 ring-offset-2 z-[+999] "
 >
-        <div className="flex xl:h-full h-auto w-full items-center justify-center xl:p-8 p-2 xl:pt-2 pt-14 ">
+        <div className="flex xl:h-full h-auto w-full items-center justify-center xl:p-8 p-2 xl:pt-2 pt-14 z-[+999]">
           <ImageTool />
         </div>
       </ExpandableScreenContent>

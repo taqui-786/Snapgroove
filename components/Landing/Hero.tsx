@@ -12,6 +12,7 @@ import { Sparkles } from "lucide-react";
 export const Hero = () => {
   return (
     <div className="relative min-h-dvh w-full flex flex-col bg-background overflow-hidden">
+        <Navbar />
       {/* Animated gradient orbs */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <motion.div
@@ -94,9 +95,9 @@ export const Hero = () => {
       {/* Radial gradient overlay */}
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_120%,rgba(var(--color-primary)/0.08),transparent_50%)] pointer-events-none" />
       
-      <Navbar />
+    
 
-      <main className="flex-1 flex flex-col items-center pt-24 md:pt-32 pb-20 px-4 relative z-10">
+      <main className="flex-1 flex flex-col items-center pt-24 md:pt-32 pb-20 px-4 relative ">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
