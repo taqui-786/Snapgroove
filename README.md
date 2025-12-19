@@ -2,7 +2,7 @@
 
 <div align="center">
 
-![Snapgroove](public/hero-showcase-img.png)
+<video src="public/snapgrooveDemoVid.mp4" width="100%" autoplay loop muted playsinline></video>
 
 <br />
 
