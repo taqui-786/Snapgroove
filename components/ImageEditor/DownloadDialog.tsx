@@ -129,7 +129,7 @@ export const DownloadDialog = ({
               <GithubIcon size="20" />
               Star on GitHub
             </Link>
-            <Link href={'https://x.com/Taquiimam14'} target="_blank" className="flex items-center gap-2 text-muted-foreground hover:text-primary">
+            <Link href={'https://x.com/md_taqui_imam'} target="_blank" className="flex items-center gap-2 text-muted-foreground hover:text-primary">
               <TwitterIcon size="20" />
               Follow on X
             </Link>

@@ -29,7 +29,7 @@ export const Navbar = () => {
 
       <div className="flex items-center gap-6">
         <Link
-          href="https://x.com/Taquiimam14"
+          href="https://x.com/md_taqui_imam"
           target="_blank"
           className="text-sm font-medium text-gray-600 hover:text-black transition-colors"
         >
