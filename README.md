@@ -2,7 +2,7 @@
 
 <div align="center">
 
-<video src="public/snapgrooveDemoVid.mp4" width="100%" autoplay loop muted playsinline></video>
+<video src="https://github.com/user-attachments/assets/5027b756-e65a-449b-ab0a-22c173e8418e" width="100%"  autoplay loop muted playsinline></video>
 
 <br />
 
