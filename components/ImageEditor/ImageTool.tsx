@@ -1,6 +1,5 @@
 "use client";
 
-import domtoimage from "dom-to-image";
 import { useEffect, useRef, useState } from "react";
 import toast from "react-hot-toast";
 
@@ -8,8 +7,16 @@ import { DownloadDialog } from "./DownloadDialog";
 import { BackgroundSettings } from "./BackgroundSettings";
 import { Canvas } from "./Canvas";
 import { ImageSettings } from "./ImageSettings";
-import type { ImageBeautifierProps, Options, ScreenshotBlob } from "./types";
+import type {
+  ImageBeautifierProps,
+  Options,
+  ScreenshotBlob,
+  ExportFormat,
+  ExportScale,
+} from "./types";
+import { DEFAULT_OPTIONS } from "./types";
 import { dataURLtoFile } from "./utils";
+import { downloadImage, copyToClipboard } from "@/lib/store/export-utils";
 
 export function ImageTool({
   onClose,
@@ -25,10 +32,10 @@ export function ImageTool({
     src: initialEditorState?.blob.src || "",
   });
   const [canvasWidth, setCanvasWidth] = useState(
-    initialEditorState?.canvasWidth || 600
+    initialEditorState?.canvasWidth || 600,
   );
   const [canvasHeight, setCanvasHeight] = useState(
-    initialEditorState?.canvasHeight || 400
+    initialEditorState?.canvasHeight || 400,
   );
   const [isResizing, setIsResizing] = useState(false);
   const [resizeStart, setResizeStart] = useState<{
@@ -38,49 +45,34 @@ export function ImageTool({
     h: number;
   } | null>(null);
   const [outlineSize, setOutlineSize] = useState(
-    initialEditorState?.outlineSize || 0
+    initialEditorState?.outlineSize || 0,
   );
   const [outlineColor, setOutlineColor] = useState(
-    initialEditorState?.outlineColor || "#292524"
+    initialEditorState?.outlineColor || "#292524",
   );
   const [options, setOptions] = useState<Options>(
-    initialEditorState?.options || {
-      aspectRatio: "aspect-auto",
-      theme: "bg-gradient-to-br from-primary to-chart-1",
-      customTheme: {
-        colorStart: "#f3f4f6",
-        colorEnd: "#e5e7eb",
-      },
-      rounded: 12,
-      roundedWrapper: "rounded-xl",
-      shadow: 3,
-      noise: true,
-      reflection: true,
-      browserBar: "hidden",
-      screenshotScale: 0.9,
-      rotation: 0,
-      pattern: {
-        enabled: true,
-        intensity: 15,
-        rotation: 0,
-        opacity: 6,
-        type: "stripes",
-      },
-      frame: "arc",
-      outlineSize: 8,
-      outlineColor: "#292524",
-    }
+    initialEditorState?.options
+      ? { ...DEFAULT_OPTIONS, ...initialEditorState.options }
+      : { ...DEFAULT_OPTIONS },
   );
   const [userResized, setUserResized] = useState(
-    !!initialEditorState?.canvasWidth
+    !!initialEditorState?.canvasWidth,
   );
   const [isDragging, setIsDragging] = useState(false);
 
+  // Export settings
+  const [exportFormat, setExportFormat] = useState<ExportFormat>("png");
+  const [exportScale, setExportScale] = useState<ExportScale>(2);
+
   useEffect(() => {
-    const preset = localStorage.getItem("options");
+    const preset = localStorage.getItem("snapgroove-options");
     if (preset) {
-      // @ts-ignore
-      // setOptions(JSON.parse(preset))
+      try {
+        const parsed = JSON.parse(preset);
+        setOptions({ ...DEFAULT_OPTIONS, ...parsed });
+      } catch {
+        // Ignore
+      }
     }
   }, []);
 
@@ -96,10 +88,10 @@ export function ImageTool({
     return () => {
       document.removeEventListener("keydown", handleShortcuts);
     };
-  }, [blob]);
+  }, [blob, exportFormat, exportScale]);
 
   useEffect(() => {
-    localStorage.setItem("options", JSON.stringify(options));
+    localStorage.setItem("snapgroove-options", JSON.stringify(options));
   }, [options]);
 
   useEffect(() => {
@@ -131,7 +123,7 @@ export function ImageTool({
       const newWidth = Math.max(100, resizeStart.w + (clientX - resizeStart.x));
       const newHeight = Math.max(
         100,
-        resizeStart.h + (clientY - resizeStart.y)
+        resizeStart.h + (clientY - resizeStart.y),
       );
       setCanvasWidth(newWidth);
       setCanvasHeight(newHeight);
@@ -188,11 +180,11 @@ export function ImageTool({
     "loading" | "success" | "idle"
   >("idle");
   const [downloadedBlobUrl, setDownloadedBlobUrl] = useState<string | null>(
-    null
+    null,
   );
   const [downloadedFileSize, setDownloadedFileSize] = useState<string>("");
 
-  const saveImage = async (scale = 1) => {
+  const saveImage = async (scale?: number) => {
     try {
       setDownloadDialogOpen(true);
       setDownloadStatus("loading");
@@ -200,58 +192,41 @@ export function ImageTool({
       const element = wrapperRef.current;
       if (!element) return;
 
-      // const savingToast = toast.loading("Saving image..."); // Removed toast
-
-      const dragHandle = element.querySelector(
-        '[role="slider"]'
-      ) as HTMLElement;
-      const originalDisplay = dragHandle?.style.display;
-      if (dragHandle) {
-        dragHandle.style.display = "none";
-      }
-
-      // Wait a bit to show loader (for effect, and to let UI update)
+      // Wait a bit to show loader
       await new Promise((resolve) => setTimeout(resolve, 800));
 
-      const data = await domtoimage.toPng(element, {
-        height: element.offsetHeight * scale,
-        width: element.offsetWidth * scale,
-        style: {
-          transform: `scale(${scale})`,
-          transformOrigin: "top left",
-          width: `${element.offsetWidth}px`,
-          height: `${element.offsetHeight}px`,
-        },
+      const scaleToUse = (scale || exportScale) as ExportScale;
+
+      const result = await downloadImage({
+        element,
+        scale: scaleToUse,
+        format: exportFormat,
+        fileName: `snapgroove-export.${exportFormat}`,
       });
 
-      if (dragHandle) {
-        dragHandle.style.display = originalDisplay || "";
-      }
-
-      const link = document.createElement("a");
-      link.download = "snapgroove-export.png";
-      link.href = data;
-      link.click();
-
-      // Calculate size
-      const base64str = data.split(",")[1];
-      const decoded = atob(base64str);
-      const sizeInBytes = decoded.length;
-      const sizeInKb = (sizeInBytes / 1024).toFixed(1);
-
-      setDownloadedFileSize(`${sizeInKb} KB`);
-      setDownloadedBlobUrl(data);
+      setDownloadedFileSize(result.sizeKb);
+      setDownloadedBlobUrl(result.dataUrl);
       setDownloadStatus("success");
 
       if (onUpload) {
-        const file = dataURLtoFile(data, "snapgroove-export.png");
-        onUpload(file);
+        onUpload(result.file);
       }
-
     } catch (error) {
       setDownloadDialogOpen(false);
       setDownloadStatus("idle");
       toast.error("Something went wrong");
+    }
+  };
+
+  const handleCopyToClipboard = async () => {
+    const element = wrapperRef.current;
+    if (!element) return;
+
+    const success = await copyToClipboard(element, exportScale);
+    if (success) {
+      toast.success("Copied to clipboard!");
+    } else {
+      toast.error("Failed to copy to clipboard");
     }
   };
 
@@ -300,7 +275,10 @@ export function ImageTool({
   };
 
   return (
-    <div className="flex flex-col  w-full bg-background p-2 xl:p-4 rounded-lg  " data-vaul-no-drag>
+    <div
+      className="flex flex-col  w-full bg-background p-2 xl:p-4 rounded-lg  "
+      data-vaul-no-drag
+    >
       <div className="relative w-full flex xl:flex-row flex-col justify-center gap-4">
         <ImageSettings
           options={options}
@@ -366,7 +344,13 @@ export function ImageTool({
           status={downloadStatus}
           blobUrl={downloadedBlobUrl}
           fileSize={downloadedFileSize}
-          fileName="snapgroove-export.png"
+          fileName={`snapgroove-export.${exportFormat}`}
+          exportFormat={exportFormat}
+          exportScale={exportScale}
+          onExportFormatChange={setExportFormat}
+          onExportScaleChange={setExportScale}
+          onCopyToClipboard={handleCopyToClipboard}
+          onRedownload={() => saveImage()}
         />
       </div>
     </div>

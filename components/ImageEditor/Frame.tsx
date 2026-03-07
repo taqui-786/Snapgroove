@@ -41,14 +41,14 @@ export const Frame = ({
                 key={index}
                 className="absolute w-full"
                 style={{
-                  height: borderRadius, // Make it as tall as the border radius
+                  height: borderRadius,
                   borderTopLeftRadius: borderRadius,
                   borderTopRightRadius: borderRadius,
                   backgroundColor,
                   transform: `translateY(${translateY}px) scaleX(${scale})`,
                   transformOrigin: "top center",
                   opacity,
-                  clipPath: "inset(0 0 calc(100% - 10px) 0)", // Only show the top 10px
+                  clipPath: "inset(0 0 calc(100% - 10px) 0)",
                 }}
               />
             );
@@ -125,6 +125,127 @@ export const Frame = ({
         </div>
         <div className="bg-white border-t border-gray-100 relative z-10">
           {children}
+        </div>
+      </div>
+    );
+  }
+
+  if (type === "windows-light") {
+    return (
+      <div
+        className="relative overflow-hidden shadow-xl border border-gray-200"
+        style={{ borderRadius }}
+      >
+        <div className="bg-[#f3f3f3] px-3 py-2 flex items-center w-full border-b border-gray-200">
+          <div className="flex items-center gap-2 flex-1">
+            <div className="w-4 h-4 rounded-sm bg-primary/20 flex items-center justify-center">
+              <div className="w-2 h-2 rounded-sm bg-primary/60" />
+            </div>
+            <span className="text-[10px] text-gray-500 font-medium">
+              snapgroove.com
+            </span>
+          </div>
+          <div className="flex items-center">
+            <div className="w-10 h-7 flex items-center justify-center hover:bg-gray-200 transition-colors">
+              <svg width="10" height="1" viewBox="0 0 10 1" fill="none">
+                <rect width="10" height="1" fill="#666" />
+              </svg>
+            </div>
+            <div className="w-10 h-7 flex items-center justify-center hover:bg-gray-200 transition-colors">
+              <svg width="9" height="9" viewBox="0 0 9 9" fill="none">
+                <rect
+                  x="0.5"
+                  y="0.5"
+                  width="8"
+                  height="8"
+                  stroke="#666"
+                  strokeWidth="1"
+                  fill="none"
+                />
+              </svg>
+            </div>
+            <div className="w-10 h-7 flex items-center justify-center hover:bg-[#e81123] hover:text-white transition-colors group">
+              <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+                <path
+                  d="M1 1L9 9M9 1L1 9"
+                  stroke="#666"
+                  strokeWidth="1"
+                  className="group-hover:stroke-white"
+                />
+              </svg>
+            </div>
+          </div>
+        </div>
+        <div className="relative z-10 bg-white">{children}</div>
+      </div>
+    );
+  }
+
+  if (type === "windows-dark") {
+    return (
+      <div
+        className="relative overflow-hidden shadow-2xl ring-1 ring-white/10"
+        style={{ borderRadius }}
+      >
+        <div className="bg-[#202020] px-3 py-2 flex items-center w-full border-b border-white/5">
+          <div className="flex items-center gap-2 flex-1">
+            <div className="w-4 h-4 rounded-sm bg-primary/20 flex items-center justify-center">
+              <div className="w-2 h-2 rounded-sm bg-primary/60" />
+            </div>
+            <span className="text-[10px] text-gray-400 font-medium">
+              snapgroove.com
+            </span>
+          </div>
+          <div className="flex items-center">
+            <div className="w-10 h-7 flex items-center justify-center hover:bg-white/10 transition-colors">
+              <svg width="10" height="1" viewBox="0 0 10 1" fill="none">
+                <rect width="10" height="1" fill="#aaa" />
+              </svg>
+            </div>
+            <div className="w-10 h-7 flex items-center justify-center hover:bg-white/10 transition-colors">
+              <svg width="9" height="9" viewBox="0 0 9 9" fill="none">
+                <rect
+                  x="0.5"
+                  y="0.5"
+                  width="8"
+                  height="8"
+                  stroke="#aaa"
+                  strokeWidth="1"
+                  fill="none"
+                />
+              </svg>
+            </div>
+            <div className="w-10 h-7 flex items-center justify-center hover:bg-[#e81123] transition-colors group">
+              <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+                <path
+                  d="M1 1L9 9M9 1L1 9"
+                  stroke="#aaa"
+                  strokeWidth="1"
+                  className="group-hover:stroke-white"
+                />
+              </svg>
+            </div>
+          </div>
+        </div>
+        <div className="relative z-10 bg-[#1e1e1e]">{children}</div>
+      </div>
+    );
+  }
+
+  if (type === "photograph") {
+    return (
+      <div
+        className="relative overflow-hidden bg-white shadow-xl"
+        style={{
+          borderRadius: borderRadius,
+          padding: "12px 12px 40px 12px",
+        }}
+      >
+        <div className="relative z-10">{children}</div>
+        <div className="absolute bottom-0 left-0 right-0 h-9 flex items-center justify-center">
+          <span className="text-[10px] text-gray-400 font-medium italic">
+            snapgroove.com
+          </span>
         </div>
       </div>
     );

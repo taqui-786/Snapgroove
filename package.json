@@ -23,12 +23,14 @@
     "clsx": "^2.1.1",
     "dom-to-image": "^2.6.0",
     "lucide-react": "^0.556.0",
+    "modern-screenshot": "^4.6.8",
     "motion": "^12.23.25",
     "next": "16.0.7",
     "react": "19.2.0",
     "react-dom": "19.2.0",
     "react-hot-toast": "^2.6.0",
-    "tailwind-merge": "^3.4.0"
+    "tailwind-merge": "^3.4.0",
+    "zustand": "^5.0.11"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",

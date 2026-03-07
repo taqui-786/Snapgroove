@@ -1,10 +1,11 @@
 import { cn } from "@/lib/utils";
-import { ImagePlus, MousePointer } from "lucide-react";
+import { MousePointer } from "lucide-react";
 import type { RefObject } from "react";
 import { Frame } from "./Frame";
 import type { Options, ScreenshotBlob } from "./types";
 import { getMostCommonBorderColor, rgbToHex, shadowMap } from "./utils";
 import { ImageAddIcon, ResizeIcon } from "../CustomIcons";
+import { ASPECT_RATIO_PRESETS } from "@/lib/constants/aspect-ratio";
 
 interface CanvasProps {
   blob: ScreenshotBlob;
@@ -36,6 +37,88 @@ interface CanvasProps {
     w: number;
     h: number;
   }) => void;
+}
+
+function buildCssFilter(filters: Options["filters"]): string {
+  const parts: string[] = [];
+  if (filters.brightness !== 100)
+    parts.push(`brightness(${filters.brightness}%)`);
+  if (filters.contrast !== 100) parts.push(`contrast(${filters.contrast}%)`);
+  if (filters.saturation !== 100)
+    parts.push(`saturate(${filters.saturation}%)`);
+  if (filters.blur > 0) parts.push(`blur(${filters.blur}px)`);
+  if (filters.grayscale > 0) parts.push(`grayscale(${filters.grayscale}%)`);
+  if (filters.sepia > 0) parts.push(`sepia(${filters.sepia}%)`);
+  if (filters.hueRotate !== 0)
+    parts.push(`hue-rotate(${filters.hueRotate}deg)`);
+  if (filters.invert > 0) parts.push(`invert(${filters.invert}%)`);
+  return parts.length > 0 ? parts.join(" ") : "none";
+}
+
+function buildAdvancedShadow(shadow: Options["advancedShadow"]): string {
+  if (!shadow.enabled) return "";
+  const r = parseInt(shadow.color.slice(1, 3), 16);
+  const g = parseInt(shadow.color.slice(3, 5), 16);
+  const b = parseInt(shadow.color.slice(5, 7), 16);
+  return `rgba(${r}, ${g}, ${b}, ${shadow.opacity / 100}) ${shadow.offsetX}px ${shadow.offsetY}px ${shadow.blur}px ${shadow.spread}px`;
+}
+
+function buildPerspectiveTransform(
+  perspective: Options["perspective"],
+  screenshotScale: number,
+  rotation: number,
+): string {
+  const has3D =
+    perspective.rotateX !== 0 ||
+    perspective.rotateY !== 0 ||
+    perspective.rotateZ !== 0 ||
+    perspective.scale !== 1;
+
+  const parts: string[] = [];
+  parts.push(`scale(${screenshotScale})`);
+  parts.push(`rotate(${rotation}deg)`);
+
+  if (has3D) {
+    parts.push(`perspective(${perspective.perspective}px)`);
+    parts.push(`rotateX(${perspective.rotateX}deg)`);
+    parts.push(`rotateY(${perspective.rotateY}deg)`);
+    parts.push(`rotateZ(${perspective.rotateZ}deg)`);
+    parts.push(
+      `scale3d(${perspective.scale}, ${perspective.scale}, ${perspective.scale})`,
+    );
+  }
+
+  return parts.join(" ");
+}
+
+function getBackgroundStyle(options: Options): React.CSSProperties {
+  const opacity = options.backgroundOpacity / 100;
+
+  if (options.backgroundMode === "solid") {
+    return { background: options.customTheme.colorStart, opacity };
+  }
+
+  if (
+    options.backgroundMode === "custom" ||
+    (options.backgroundMode === "gradient" && !options.theme)
+  ) {
+    return {
+      background: `linear-gradient(${options.customTheme.direction}, ${options.customTheme.colorStart}, ${options.customTheme.colorEnd})`,
+      opacity,
+    };
+  }
+
+  if (options.backgroundMode === "image" && options.backgroundImage) {
+    return {
+      backgroundImage: `url(${options.backgroundImage})`,
+      backgroundSize: "cover",
+      backgroundPosition: "center",
+      opacity,
+    };
+  }
+
+  // Default: Tailwind class-based gradient
+  return { opacity };
 }
 
 export const Canvas = ({
@@ -91,6 +174,40 @@ export const Canvas = ({
     }
   };
 
+  const cssFilter = buildCssFilter(options.filters);
+  const advancedShadowStyle = buildAdvancedShadow(options.advancedShadow);
+  const perspectiveTransform = buildPerspectiveTransform(
+    options.perspective,
+    options.screenshotScale,
+    options.rotation,
+  );
+  const bgStyle = getBackgroundStyle(options);
+  const useTailwindBg =
+    options.backgroundMode === "gradient" && !!options.theme;
+
+  // Compute aspect ratio dimensions
+  const getAspectDimensions = () => {
+    const preset = ASPECT_RATIO_PRESETS.find(
+      (p) => p.value === options.aspectRatio,
+    );
+    if (
+      !preset ||
+      !preset.ratio ||
+      options.aspectRatio === "free" ||
+      options.aspectRatio === "aspect-auto"
+    ) {
+      return {
+        width: canvasWidth + outlineSize,
+        height: canvasHeight + outlineSize,
+      };
+    }
+    const width = canvasWidth + outlineSize;
+    const height = width / preset.ratio;
+    return { width, height };
+  };
+
+  const dims = getAspectDimensions();
+
   return (
     <div
       className={cn(
@@ -105,7 +222,7 @@ export const Canvas = ({
             !isDragging || blob.src,
           "bg-[image:repeating-linear-gradient(315deg,rgba(251,191,36,0.15)_0,rgba(251,191,36,0.15)_1px,_transparent_0,_transparent_50%)]":
             isDragging && !blob.src,
-        }
+        },
       )}
       ref={containerRef}
       onDragOver={onDragOver}
@@ -121,13 +238,12 @@ export const Canvas = ({
         <div
           className={cn("overflow-hidden")}
           style={{
-            width: canvasWidth + outlineSize,
-            height: canvasHeight + outlineSize,
+            width: dims.width,
+            height: dims.height,
             minWidth: 100,
             minHeight: 100,
             maxWidth: "100%",
             maxHeight: "80vh",
-            // borderRadius: `${options.rounded}px`,
           }}
         >
           <div
@@ -137,26 +253,29 @@ export const Canvas = ({
               width: "100%",
               height: "100%",
               boxShadow: shadowMap[options.shadow],
-              //   borderRadius: `${options.rounded}px`,
             }}
             className={cn(
               "transition-all duration-200 ease-in-out flex items-center justify-center overflow-hidden w-full h-full flex-col",
-              [options.theme],
-              options.aspectRatio
+              useTailwindBg ? [options.theme] : "",
+              options.aspectRatio === "aspect-auto" ? options.aspectRatio : "",
             )}
           >
+            {/* Background layer for non-tailwind backgrounds */}
+            {!useTailwindBg && (
+              <div className="absolute inset-0 w-full h-full" style={bgStyle} />
+            )}
+
             {renderBrowserBar()}
             {options.noise && (
               <div
                 style={{
                   backgroundImage: `url("/noise.svg")`,
-                  //   borderRadius: `${options.rounded}px`,
                 }}
                 className={cn(
                   "absolute inset-0 w-full h-full bg-repeat opacity-[0.15]",
                   {
                     "rounded-t-none": options.browserBar !== "hidden",
-                  }
+                  },
                 )}
               />
             )}
@@ -191,10 +310,12 @@ export const Canvas = ({
                 transition: "400ms cubic-bezier(0.03, 0.98, 0.52, 0.99)",
                 position: "relative",
                 zIndex: 2,
-                transform: `scale(${options.screenshotScale}) rotate(${options.rotation}deg)`,
+                transform: perspectiveTransform,
                 maxWidth: "100%",
                 maxHeight: "100%",
-                boxShadow: shadowMap[options.shadow],
+                boxShadow: advancedShadowStyle || shadowMap[options.shadow],
+                padding:
+                  options.padding > 0 ? `${options.padding}px` : undefined,
               }}
             >
               <div className="relative">
@@ -250,6 +371,7 @@ export const Canvas = ({
                         width: "100%",
                         height: "100%",
                         display: "block",
+                        filter: cssFilter !== "none" ? cssFilter : undefined,
                       }}
                       onLoad={(e) => {
                         const target = e.target as HTMLImageElement;
@@ -276,7 +398,7 @@ export const Canvas = ({
                           }
 
                           setCanvasHeight(
-                            Math.max(200, Math.min(newHeight, maxHeight))
+                            Math.max(200, Math.min(newHeight, maxHeight)),
                           );
                           setUserResized(true);
                         }
@@ -287,10 +409,8 @@ export const Canvas = ({
                           });
                         }
                       }}
-               
                       alt="Screenshot preview"
                     />
-             
                   </div>
                 </Frame>
               </div>
@@ -333,14 +453,15 @@ export const Canvas = ({
       ) : (
         <div
           className={cn(
-            "flex flex-col items-center justify-center xl:p-12 p-2 border bg-white border-stone-200 rounded-xl cursor-pointer hover:border-stone-300 transition-all duration-300 backdrop-blur-sm"
+            "flex flex-col items-center justify-center xl:p-12 p-2 border bg-white border-stone-200 rounded-xl cursor-pointer hover:border-stone-300 transition-all duration-300 backdrop-blur-sm",
           )}
           onClick={(e) => e.stopPropagation()}
         >
           <label htmlFor="screenshot-upload" className="cursor-pointer w-full">
             <div className="flex flex-col items-center text-center space-y-3">
               <div className="relative">
-                <ImageAddIcon size="28"
+                <ImageAddIcon
+                  size="28"
                   className={cn(" text-muted-foreground", {
                     "text-primary": isDragging,
                   })}
