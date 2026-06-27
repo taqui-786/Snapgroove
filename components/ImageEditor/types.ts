@@ -186,7 +186,7 @@ export const DEFAULT_ADVANCED_SHADOW: AdvancedShadow = {
 };
 
 export const DEFAULT_OPTIONS: Options = {
-  aspectRatio: "aspect-auto",
+  aspectRatio: "free",
   theme: "bg-gradient-to-br from-primary to-chart-1",
   backgroundMode: "gradient",
   customTheme: {

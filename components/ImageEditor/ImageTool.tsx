@@ -2,11 +2,15 @@
 
 import { useEffect, useRef, useState } from "react";
 import toast from "react-hot-toast";
+import Image from "next/image";
+import Link from "next/link";
+import { Github } from "lucide-react";
 
 import { DownloadDialog } from "./DownloadDialog";
 import { BackgroundSettings } from "./BackgroundSettings";
 import { Canvas } from "./Canvas";
 import { ImageSettings } from "./ImageSettings";
+import { AspectRatioDropdown } from "./AspectRatioDropdown";
 import type {
   ImageBeautifierProps,
   Options,
@@ -17,6 +21,7 @@ import type {
 import { DEFAULT_OPTIONS } from "./types";
 import { dataURLtoFile } from "./utils";
 import { downloadImage, copyToClipboard } from "@/lib/store/export-utils";
+import { ASPECT_RATIO_PRESETS } from "@/lib/constants/aspect-ratio";
 
 export function ImageTool({
   onClose,
@@ -59,6 +64,8 @@ export function ImageTool({
     !!initialEditorState?.canvasWidth,
   );
   const [isDragging, setIsDragging] = useState(false);
+  const optionsRef = useRef(options);
+  optionsRef.current = options;
 
   // Export settings
   const [exportFormat, setExportFormat] = useState<ExportFormat>("png");
@@ -95,6 +102,15 @@ export function ImageTool({
   }, [options]);
 
   useEffect(() => {
+    const preset = ASPECT_RATIO_PRESETS.find(
+      (p) => p.id === options.aspectRatio,
+    );
+    if (preset?.ratio) {
+      setCanvasHeight(canvasWidth / preset.ratio);
+    }
+  }, [canvasWidth, options.aspectRatio]);
+
+  useEffect(() => {
     function setCanvasToContainer() {
       if (containerRef.current && !userResized && !blob.src) {
         const rect = containerRef.current.getBoundingClientRect();
@@ -121,12 +137,20 @@ export function ImageTool({
         clientY = e.clientY;
       }
       const newWidth = Math.max(100, resizeStart.w + (clientX - resizeStart.x));
-      const newHeight = Math.max(
-        100,
-        resizeStart.h + (clientY - resizeStart.y),
+      const preset = ASPECT_RATIO_PRESETS.find(
+        (p) => p.id === optionsRef.current.aspectRatio,
       );
-      setCanvasWidth(newWidth);
-      setCanvasHeight(newHeight);
+      if (preset?.ratio) {
+        setCanvasWidth(newWidth);
+        setCanvasHeight(newWidth / preset.ratio);
+      } else {
+        const newHeight = Math.max(
+          100,
+          resizeStart.h + (clientY - resizeStart.y),
+        );
+        setCanvasWidth(newWidth);
+        setCanvasHeight(newHeight);
+      }
     };
 
     const onUp = () => setIsResizing(false);
@@ -275,11 +299,45 @@ export function ImageTool({
   };
 
   return (
-    <div
-      className="flex flex-col  w-full bg-background p-2 xl:p-4 rounded-lg  "
-      data-vaul-no-drag
-    >
-      <div className="relative w-full flex xl:flex-row flex-col justify-center gap-4">
+    <div className="flex flex-col w-full bg-background h-dvh overflow-hidden" data-vaul-no-drag>
+      <nav className="flex items-center justify-between px-4 py-3 border-b border-border bg-white/80 backdrop-blur-md">
+        <div className="flex items-center gap-3">
+          <div className="w-7 h-7 relative">
+            <Image
+              src="/logo.png"
+              alt="Snapgroove Logo"
+              fill
+              className="object-contain"
+            />
+          </div>
+          <span className="font-bold text-lg tracking-tight text-foreground hidden sm:inline">
+            Snapgroove
+          </span>
+          <div className="w-px h-5 bg-border/50 hidden sm:block" />
+          <AspectRatioDropdown
+            value={options.aspectRatio}
+            onChange={(value) => setOptions({ ...options, aspectRatio: value })}
+          />
+        </div>
+        <div className="flex items-center gap-4">
+          <Link
+            href="https://x.com/md_taqui_imam"
+            target="_blank"
+            className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+          >
+            Twitter
+          </Link>
+          <Link
+            href="https://github.com/taqui-786/Snapgroove"
+            target="_blank"
+            className="inline-flex items-center gap-2 px-3 py-1.5 text-sm font-medium text-white bg-primary rounded-full hover:bg-primary/80 transition-colors"
+          >
+            <Github className="w-4 h-4" />
+            <span>Github</span>
+          </Link>
+        </div>
+      </nav>
+      <div className="relative w-full flex-1 flex xl:flex-row flex-col justify-center gap-0 min-h-0">
         <ImageSettings
           options={options}
           setOptions={setOptions}

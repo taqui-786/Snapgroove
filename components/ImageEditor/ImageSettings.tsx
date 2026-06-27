@@ -4,7 +4,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
-import { ASPECT_RATIO_PRESETS } from "@/lib/constants/aspect-ratio";
+
 import { EnhancedSlider } from "../ui/EnchancedSidebar";
 import { Toggle } from "@/components/ui/toggle";
 import type { Options, ScreenshotBlob, FrameType } from "./types";
@@ -173,13 +173,10 @@ export const ImageSettings = ({
   return (
     <div
       className={cn(
-        "bg-light-gray xl:w-[19rem] w-full rounded-lg min-h-full max-h-[80vh] flex flex-col xl:order-1 order-2",
-        {
-          hidden: !Boolean(blob.src),
-        },
+        "bg-light-gray w-full xl:w-72 h-full flex flex-col xl:order-1 order-2",
       )}
     >
-      <div className="flex-1 overflow-y-auto p-6">
+      <div className="flex-1 overflow-y-auto p-3">
         <div className="space-y-8">
           <div className="space-y-6">
             <div className="flex items-center justify-between gap-2">
@@ -259,31 +256,6 @@ export const ImageSettings = ({
                 </div>
               </PopoverContent>
             </Popover>
-
-            {/* Aspect Ratio */}
-            <div className="space-y-2">
-              <span className="block text-xs font-medium text-gray-700">
-                Aspect Ratio
-              </span>
-              <div className="flex flex-wrap gap-1.5">
-                {ASPECT_RATIO_PRESETS.map((preset) => (
-                  <button
-                    key={preset.value}
-                    className={cn(
-                      "px-2.5 py-1 text-xs font-medium rounded-md border transition-all duration-200",
-                      options.aspectRatio === preset.value
-                        ? "bg-primary text-white border-primary shadow-sm"
-                        : "bg-white text-gray-600 border-gray-200 hover:border-gray-300 hover:bg-gray-50",
-                    )}
-                    onClick={() =>
-                      setOptions({ ...options, aspectRatio: preset.value })
-                    }
-                  >
-                    {preset.label}
-                  </button>
-                ))}
-              </div>
-            </div>
 
             <EnhancedSlider
               value={options.screenshotScale}

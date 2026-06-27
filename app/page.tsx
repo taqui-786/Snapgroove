@@ -1,9 +1,9 @@
-import { Hero } from "@/components/Landing/Hero";
+import { ImageTool } from "@/components/ImageEditor/ImageTool";
 
 export default function Home() {
   return (
     <main className="min-h-dvh w-full">
-      <Hero />
+      <ImageTool />
     </main>
   );
 }

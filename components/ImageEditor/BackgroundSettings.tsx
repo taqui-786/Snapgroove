@@ -60,13 +60,10 @@ export const BackgroundSettings = ({
   return (
     <div
       className={cn(
-        "bg-light-gray xl:w-[19rem] w-full rounded-lg min-h-full max-h-[80vh] flex flex-col order-3",
-        {
-          hidden: !Boolean(blob.src),
-        },
+        "bg-light-gray w-full xl:w-72 h-full flex flex-col order-3",
       )}
     >
-      <div className="flex-1 overflow-y-auto p-6">
+      <div className="flex-1 overflow-y-auto p-3">
         <div className="space-y-8">
           <div className="space-y-6">
             <div className="flex flex-col gap-6 items-center justify-between">
@@ -462,7 +459,7 @@ export const BackgroundSettings = ({
         </div>
       </div>
 
-      <div className="p-6 pt-6 border-t border-gray-200">
+      <div className="p-3 border-t border-gray-200">
         <div className="flex gap-3">
           <Button
             className="flex-1 gap-2 h-11"

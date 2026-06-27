@@ -5,7 +5,7 @@ import { Frame } from "./Frame";
 import type { Options, ScreenshotBlob } from "./types";
 import { getMostCommonBorderColor, rgbToHex, shadowMap } from "./utils";
 import { ImageAddIcon, ResizeIcon } from "../CustomIcons";
-import { ASPECT_RATIO_PRESETS } from "@/lib/constants/aspect-ratio";
+
 
 interface CanvasProps {
   blob: ScreenshotBlob;
@@ -185,37 +185,17 @@ export const Canvas = ({
   const useTailwindBg =
     options.backgroundMode === "gradient" && !!options.theme;
 
-  // Compute aspect ratio dimensions
-  const getAspectDimensions = () => {
-    const preset = ASPECT_RATIO_PRESETS.find(
-      (p) => p.value === options.aspectRatio,
-    );
-    if (
-      !preset ||
-      !preset.ratio ||
-      options.aspectRatio === "free" ||
-      options.aspectRatio === "aspect-auto"
-    ) {
-      return {
-        width: canvasWidth + outlineSize,
-        height: canvasHeight + outlineSize,
-      };
-    }
-    const width = canvasWidth + outlineSize;
-    const height = width / preset.ratio;
-    return { width, height };
+  const dims = {
+    width: canvasWidth + outlineSize,
+    height: canvasHeight + outlineSize,
   };
-
-  const dims = getAspectDimensions();
 
   return (
     <div
       className={cn(
-        "relative w-full flex-1 flex items-start justify-center min-h-[500px] h-full rounded-lg xl:order-2 order-1",
+        "relative w-full flex-1 flex items-center justify-center h-full overflow-hidden xl:order-2 order-1",
         "bg-light-gray border border-stone-200 bg-[size:10px_10px] bg-fixed transition-all duration-200",
         {
-          "items-center h-[80vh]": !Boolean(blob.src),
-          "max-w-[calc(72rem-330px)] h-[80vh]": Boolean(blob.src),
           "ring-2 ring-primary ring-offset-2 bg-indigo-50/50":
             isDragging && !blob.src,
           "bg-[image:repeating-linear-gradient(315deg,rgba(209,213,219,0.4)_0,rgba(209,213,219,0.4)_1px,_transparent_0,_transparent_50%)]":
@@ -228,11 +208,6 @@ export const Canvas = ({
       onDragOver={onDragOver}
       onDragLeave={onDragLeave}
       onDrop={onDrop}
-      onClick={() => {
-        if (!blob.src && fileInputRef.current) {
-          fileInputRef.current.click();
-        }
-      }}
     >
       {blob?.src ? (
         <div
@@ -257,10 +232,9 @@ export const Canvas = ({
             className={cn(
               "transition-all duration-200 ease-in-out flex items-center justify-center overflow-hidden w-full h-full flex-col",
               useTailwindBg ? [options.theme] : "",
-              options.aspectRatio === "aspect-auto" ? options.aspectRatio : "",
+              "",
             )}
           >
-            {/* Background layer for non-tailwind backgrounds */}
             {!useTailwindBg && (
               <div className="absolute inset-0 w-full h-full" style={bgStyle} />
             )}
@@ -451,65 +425,74 @@ export const Canvas = ({
           </div>
         </div>
       ) : (
-        <div
-          className={cn(
-            "flex flex-col items-center justify-center xl:p-12 p-2 border bg-white border-stone-200 rounded-xl cursor-pointer hover:border-stone-300 transition-all duration-300 backdrop-blur-sm",
-          )}
-          onClick={(e) => e.stopPropagation()}
-        >
-          <label htmlFor="screenshot-upload" className="cursor-pointer w-full">
-            <div className="flex flex-col items-center text-center space-y-3">
-              <div className="relative">
-                <ImageAddIcon
-                  size="28"
-                  className={cn(" text-muted-foreground", {
-                    "text-primary": isDragging,
-                  })}
-                />
-              </div>
-
-              <div className="space-y-3">
-                <h3 className="text-xl font-medium text-stone-800">
-                  {isDragging ? "Drop your image here" : "Add an image"}
-                </h3>
-                <p className="text-sm text-stone-500 max-w-sm">
-                  Make your content shine with{" "}
-                  <span className="text-primary font-medium">
-                    clear, beautiful visuals
-                  </span>
-                  . <br />
-                  Drag & drop, paste, or click to upload.
-                </p>
-              </div>
-
-              <div className="flex flex-col items-center gap-3">
-                <div className="flex items-center gap-2 text-xs text-stone-400">
-                  <span className="px-2 py-1 rounded-md bg-light-gray bg-opacity-75">
-                    ⌘V
-                  </span>
-                  <span>to paste</span>
+        <div className="flex-1 flex items-center justify-center p-2">
+          <div
+            className={cn(
+              "flex flex-col items-center justify-center xl:p-12 p-2 border bg-white border-stone-200 rounded-xl cursor-pointer hover:border-stone-300 transition-all duration-300 backdrop-blur-sm",
+            )}
+            onClick={() => {
+              if (fileInputRef.current) {
+                fileInputRef.current.click();
+              }
+            }}
+          >
+            <label htmlFor="screenshot-upload" className="cursor-pointer w-full">
+              <div className="flex flex-col items-center text-center space-y-3">
+                <div className="relative">
+                  <ImageAddIcon
+                    size="28"
+                    className={cn(" text-muted-foreground", {
+                      "text-primary": isDragging,
+                    })}
+                  />
                 </div>
-                <div className="border-b border-stone-200 w-[300px]"></div>
-                <div
-                  className="w-[150px] flex flex-col items-center gap-2 text-xs text-stone-400 "
-                  onClick={onClickExample}
-                >
-                  <div className="mt-2 border border-dashed border-stone-300 rounded-full p-3 w-12 h-12 flex items-center justify-center group">
-                    <MousePointer className="size-6 text-stone-300 group-hover:scale-125 group-hover:text-primary transition-all duration-100"></MousePointer>
+
+                <div className="space-y-3">
+                  <h3 className="text-xl font-medium text-stone-800">
+                    {isDragging ? "Drop your image here" : "Add an image"}
+                  </h3>
+                  <p className="text-sm text-stone-500 max-w-sm">
+                    Make your content shine with{" "}
+                    <span className="text-primary font-medium">
+                      clear, beautiful visuals
+                    </span>
+                    . <br />
+                    Drag & drop, paste, or click to upload.
+                  </p>
+                </div>
+
+                <div className="flex flex-col items-center gap-3">
+                  <div className="flex items-center gap-2 text-xs text-stone-400">
+                    <span className="px-2 py-1 rounded-md bg-light-gray bg-opacity-75">
+                      ⌘V
+                    </span>
+                    <span>to paste</span>
                   </div>
-                  <span>Try demo image</span>
+                  <div className="border-b border-stone-200 w-[300px]"></div>
+                  <div
+                    className="w-[150px] flex flex-col items-center gap-2 text-xs text-stone-400 "
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onClickExample();
+                    }}
+                  >
+                    <div className="mt-2 border border-dashed border-stone-300 rounded-full p-3 w-12 h-12 flex items-center justify-center group">
+                      <MousePointer className="size-6 text-stone-300 group-hover:scale-125 group-hover:text-primary transition-all duration-100"></MousePointer>
+                    </div>
+                    <span>Try demo image</span>
+                  </div>
                 </div>
               </div>
-            </div>
-            <input
-              ref={fileInputRef}
-              id="screenshot-upload"
-              type="file"
-              accept="image/*"
-              className="hidden"
-              onChange={onPaste}
-            />
-          </label>
+              <input
+                ref={fileInputRef}
+                id="screenshot-upload"
+                type="file"
+                accept="image/*"
+                className="hidden"
+                onChange={onPaste}
+              />
+            </label>
+          </div>
         </div>
       )}
     </div>
